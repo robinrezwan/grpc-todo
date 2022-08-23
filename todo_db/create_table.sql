@@ -1,0 +1,6 @@
+CREATE TABLE todo
+(
+    id          INT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+    title       VARCHAR(200)   DEFAULT NULL,
+    description VARCHAR(2000)  DEFAULT NULL
+);
