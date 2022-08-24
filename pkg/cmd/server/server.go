@@ -1,11 +1,11 @@
-package cmd
+package server
 
 import (
 	"context"
 	"database/sql"
 	"flag"
 	"fmt"
-	_ "github.com/lib/pq"
+	_ "github.com/jackc/pgx/v4/stdlib"
 	"github.com/robinrezwan/grpc-todo/pkg/protocol/grpc"
 	"github.com/robinrezwan/grpc-todo/pkg/service/v1"
 )
@@ -25,36 +25,36 @@ type Config struct {
 
 // RunServer runs gRPC server and HTTP gateway
 func RunServer() error {
-	ctx := context.Background()
-
 	// get configuration
-	var config Config
+	var cfg Config
 
-	flag.StringVar(&config.GRPCPort, "grpc-port", "", "gRPC port to bind")
-	flag.StringVar(&config.DBHost, "db-host", "", "Database host")
-	flag.StringVar(&config.DBPort, "db-port", "", "Database port")
-	flag.StringVar(&config.DBUser, "db-user", "", "Database user")
-	flag.StringVar(&config.DBPassword, "db-password", "", "Database password")
-	flag.StringVar(&config.DBName, "db-name", "", "Database schema")
+	flag.StringVar(&cfg.GRPCPort, "grpc-port", "", "gRPC port to bind")
+	flag.StringVar(&cfg.DBHost, "db-host", "", "Database host")
+	flag.StringVar(&cfg.DBPort, "db-port", "", "Database port")
+	flag.StringVar(&cfg.DBUser, "db-user", "", "Database user")
+	flag.StringVar(&cfg.DBPassword, "db-password", "", "Database password")
+	flag.StringVar(&cfg.DBName, "db-name", "", "Database name")
 
 	flag.Parse()
 
-	if len(config.GRPCPort) == 0 {
-		return fmt.Errorf("invalid TCP port for gRPC server: %s", config.GRPCPort)
+	if len(cfg.GRPCPort) == 0 {
+		return fmt.Errorf("invalid TCP port for gRPC server: %s", cfg.GRPCPort)
 	}
 
-	dataSourceName := fmt.Sprintf("host=%s "+"port=%s "+"user=%s "+"password=%s "+"dbname=%s "+"sslmode=disable",
-		config.DBHost, config.DBPort, config.DBUser, config.DBPassword, config.DBName)
+	dbUrl := fmt.Sprintf("postgres://%s:%s@%s:%s/%s?sslmode=disable",
+		cfg.DBUser, cfg.DBPassword, cfg.DBHost, cfg.DBPort, cfg.DBName)
 
-	db, err := sql.Open("postgres", dataSourceName)
+	ctx := context.Background()
+
+	db, err := sql.Open("pgx", dbUrl)
 
 	if err != nil {
-		return fmt.Errorf("failed to open database: %v", err)
+		return fmt.Errorf("unable to connect to database: %v", err)
 	}
 
 	defer db.Close()
 
 	v1API := v1.NewToDoServiceServer(db)
 
-	return grpc.RunServer(ctx, v1API, config.GRPCPort)
+	return grpc.RunServer(ctx, v1API, cfg.GRPCPort)
 }

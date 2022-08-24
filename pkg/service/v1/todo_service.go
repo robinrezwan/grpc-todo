@@ -14,7 +14,7 @@ const (
 	apiVersion = "v1"
 )
 
-// toDoServiceServer is implementation of v1.ToDoServiceServer todo interface
+// toDoServiceServer is implementation of v1.ToDoServiceServer To-Do interface
 type toDoServiceServer struct {
 	v1.UnimplementedToDoServiceServer
 	db *sql.DB
@@ -66,7 +66,7 @@ func (s *toDoServiceServer) Create(ctx context.Context, req *v1.CreateRequest) (
 
 	// insert To-Do entity data
 	_, err = c.ExecContext(ctx, "INSERT INTO todo(title, description) VALUES($1, $2)",
-		req.ToDo.Title, req.ToDo.Description)
+		req.Todo.Title, req.Todo.Description)
 
 	if err != nil {
 		return nil, status.Errorf(codes.Unknown, "Failed to insert into DB: "+err.Error())
@@ -132,6 +132,6 @@ func (s *toDoServiceServer) Read(ctx context.Context, req *v1.ReadRequest) (*v1.
 
 	return &v1.ReadResponse{
 		Api:  apiVersion,
-		ToDo: &todo,
+		Todo: &todo,
 	}, nil
 }

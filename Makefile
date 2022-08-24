@@ -4,7 +4,7 @@ no-targets:
 	@echo "No targets specified"
 
 buf-gen:
-	buf generate
+	buf lint && buf generate
 
 server-start:
 	cd cmd\server &&\

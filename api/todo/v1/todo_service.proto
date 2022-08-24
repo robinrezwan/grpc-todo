@@ -1,7 +1,7 @@
 syntax = "proto3";
-package v1;
+package todo.v1;
 
-option go_package = "./pkg/api/v1";
+option go_package = "todo/v1";
 
 message ToDo {
   int64 id = 1;
@@ -11,7 +11,7 @@ message ToDo {
 
 message CreateRequest{
   string api = 1;
-  ToDo toDo = 2;
+  ToDo todo = 2;
 }
 
 message CreateResponse{
@@ -26,7 +26,7 @@ message ReadRequest{
 
 message ReadResponse{
   string api = 1;
-  ToDo toDo = 2;
+  ToDo todo = 2;
 }
 
 service ToDoService {

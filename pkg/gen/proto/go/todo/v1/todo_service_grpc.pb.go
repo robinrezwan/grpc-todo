@@ -36,7 +36,7 @@ func NewToDoServiceClient(cc grpc.ClientConnInterface) ToDoServiceClient {
 
 func (c *toDoServiceClient) Create(ctx context.Context, in *CreateRequest, opts ...grpc.CallOption) (*CreateResponse, error) {
 	out := new(CreateResponse)
-	err := c.cc.Invoke(ctx, "/v1.ToDoService/Create", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/todo.v1.ToDoService/Create", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -45,7 +45,7 @@ func (c *toDoServiceClient) Create(ctx context.Context, in *CreateRequest, opts 
 
 func (c *toDoServiceClient) Read(ctx context.Context, in *ReadRequest, opts ...grpc.CallOption) (*ReadResponse, error) {
 	out := new(ReadResponse)
-	err := c.cc.Invoke(ctx, "/v1.ToDoService/Read", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/todo.v1.ToDoService/Read", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -94,7 +94,7 @@ func _ToDoService_Create_Handler(srv interface{}, ctx context.Context, dec func(
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/v1.ToDoService/Create",
+		FullMethod: "/todo.v1.ToDoService/Create",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(ToDoServiceServer).Create(ctx, req.(*CreateRequest))
@@ -112,7 +112,7 @@ func _ToDoService_Read_Handler(srv interface{}, ctx context.Context, dec func(in
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/v1.ToDoService/Read",
+		FullMethod: "/todo.v1.ToDoService/Read",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(ToDoServiceServer).Read(ctx, req.(*ReadRequest))
@@ -124,7 +124,7 @@ func _ToDoService_Read_Handler(srv interface{}, ctx context.Context, dec func(in
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
 var ToDoService_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "v1.ToDoService",
+	ServiceName: "todo.v1.ToDoService",
 	HandlerType: (*ToDoServiceServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
