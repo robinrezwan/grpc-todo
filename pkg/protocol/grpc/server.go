@@ -2,7 +2,7 @@ package grpc
 
 import (
 	"context"
-	"github.com/robinrezwan/grpc-todo/pkg/api/v1"
+	"github.com/robinrezwan/grpc-todo/pkg/gen/proto/go/todo/v1"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"
 	"log"

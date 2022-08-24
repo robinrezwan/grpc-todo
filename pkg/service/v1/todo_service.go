@@ -4,7 +4,7 @@ import (
 	"context"
 	"database/sql"
 	"fmt"
-	"github.com/robinrezwan/grpc-todo/pkg/api/v1"
+	"github.com/robinrezwan/grpc-todo/pkg/gen/proto/go/todo/v1"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 )
@@ -14,7 +14,7 @@ const (
 	apiVersion = "v1"
 )
 
-// toDoServiceServer is implementation of v1.ToDoServiceServer proto interface
+// toDoServiceServer is implementation of v1.ToDoServiceServer todo interface
 type toDoServiceServer struct {
 	v1.UnimplementedToDoServiceServer
 	db *sql.DB
